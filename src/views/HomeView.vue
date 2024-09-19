@@ -2,7 +2,7 @@
   <v-app>
     <!-- 应用栏区域 -->
     <v-app-bar app
-    color="#ffffff"
+      color="#FFFFFF"
     >
       <!-- 应用栏菜单选项 -->
       <v-container fluid>
@@ -31,8 +31,21 @@
       </v-container>
     </v-app-bar>
     <v-main>
-      <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
+      <v-parallax
+        height="600"
+        src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+      >
+        <div class="text-center">
+          <h1 class="text-h2 font-weight-black mb-3">知否</h1>
+          <p>为您打造全方位的影音，博学，教学，考证网站</p>
+        </div>
       </v-parallax>
+      <v-container
+        class="text-center"
+      >
+        <h1 class="text-h2 font-weight-black mb-2">共享盛宴</h1>
+        <p>知否为您打造全方位的影音，博学，教学，考证网站</p>
+      </v-container>
     </v-main>
   </v-app>
 </template>
