@@ -1,4 +1,4 @@
-# vue2_vuetify2_pj
+# vue2-zhifou
 
 ## Project setup
 ```
