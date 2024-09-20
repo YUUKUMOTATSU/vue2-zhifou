@@ -1,4 +1,4 @@
-# vuetify2_demo
+# vue2_vuetify2_pj
 
 ## Project setup
 ```

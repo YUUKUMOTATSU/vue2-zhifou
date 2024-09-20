@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-main>
-            考证首页界面
+            影音首页界面
         </v-main>
     </v-app>
 </template>
