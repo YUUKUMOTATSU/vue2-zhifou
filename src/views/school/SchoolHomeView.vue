@@ -9,7 +9,7 @@
         <v-main>
             <v-container fluid class="d-flex justify-center">
                 <!-- 课程菜单 -->
-                <v-card height="min-content">
+                <v-card elevation="8" height="min-content">
                     <v-toolbar
                         color="blue"
                         dark
@@ -32,7 +32,12 @@
                 <!-- 课程阶段 -->
                 <v-card flat width="850" class="ml-8">
                     <!-- 阶段卡片 -->
-                    <v-card v-for="(stage,index) in subStage" :key="stage.id">
+                    <v-card
+                        elevation="8"
+                        :class="{'mt-4' : (index !== 0)}"
+                        v-for="(stage,index) in subStage" 
+                        :key="stage.id"
+                    >
                         <!-- 阶段的名称 -->
                         <v-card-title>
                             <v-chip label color="info">
@@ -43,7 +48,7 @@
                         <!-- 阶段描述 -->
                         <v-card-text>{{ stage.describe }}</v-card-text>
                         <!-- 阶段目标 -->
-                        <v-card-text class="py-0">
+                        <v-card-text class="pt-0">
                             <v-chip-group column active-class="warning" v-model="targetValue">
                                 <v-chip label v-for="target in stage.targetList" :key="target.id" :value="target.id">
                                     {{ target.name }}
@@ -51,7 +56,12 @@
                             </v-chip-group>
                         </v-card-text>
                         <!-- 阶段目标视频 -->
-                        <v-card-text>阶段目标视频</v-card-text>
+                        <v-card-text 
+                            class="pt-0" 
+                            v-show="showStageTargetVideoArea(stage.targetList)"
+                        >
+                            阶段目标视频
+                        </v-card-text>
                     </v-card>
                 </v-card>
             </v-container>
@@ -82,7 +92,24 @@ export default {
         }
     },
     methods: {
-        // 获取课程菜单
+        /**
+         * stageTargetList
+         * @param stageTargetList 当前阶段的目标集合
+         */
+        showStageTargetVideoArea(stageTargetList) {
+            let valueArr = []
+            // 当前阶段的目标值封装到 valueArr 数组中
+            stageTargetList.some((item, index) => {
+                valueArr[index] = item.id
+            })
+            // 判断 targetValue 是不是在 valueArr 数组中
+            if (valueArr.indexOf(this.targetValue) !== -1) {
+                return true
+            } else {
+                return false
+            }
+        },
+        // 根据课程菜单
         getSubjectMenus() {
             this.subMenus = [
                 { id: 1, name: 'JavaEE' },
