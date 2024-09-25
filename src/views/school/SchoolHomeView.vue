@@ -59,8 +59,55 @@
                         <v-card-text 
                             class="pt-0" 
                             v-show="showStageTargetVideoArea(stage.targetList)"
-                        >
-                            阶段目标视频
+                        >   
+                            <v-list-item>
+                                <!-- 视频封面 -->
+                                <v-list-item-avatar tile width="200" height="120">
+                                    <v-img class="rounded-lg" src="http://yun.itheima.com/Upload/Images/20211011/6163b1914c81b.jpg"></v-img>
+                                </v-list-item-avatar>
+                                <!-- 视频介绍 -->
+                                <v-list-item-content class="align-self-start">
+                                    <!-- 标题 -->
+                                    <v-list-item-title>20天Java入门基础视频教程（含Java项目和Java真题）</v-list-item-title>
+                                    <!-- 副标题 -->
+                                    <v-list-item-subtitle>
+                                        <v-chip 
+                                            small 
+                                            color="success"
+                                            class="font-weight-black font-italic rounded-0 mr-2"
+                                        >
+                                            NEW
+                                        </v-chip>
+                                        <v-chip 
+                                            small 
+                                            color="warning"
+                                            class="font-weight-black font-italic rounded-0 mr-2"
+                                        >
+                                            HOT
+                                        </v-chip>
+                                        <!-- 发布时间 -->
+                                        <span>
+                                            更新于：2021-12-21
+                                        </span>
+                                        <!-- 介绍 -->
+                                        <div class="text-caption grey--text text--lighten-1 line__3">
+                                            1.全网最强，最实用Java入门教程。<br/>
+                                            2.全网最强，最实用Java入门教程。<br/>
+                                            3.全网最强，最实用Java入门教程。<br/>
+                                            4.全网最强，最实用Java入门教程。<br/>
+                                            5.全网最强，最实用Java入门教程。
+                                        </div>
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
+                                <!-- 学习 -->
+                                <v-list-action>
+                                    <div class="text-center">
+                                        <span class="text-caption grey--text text--lighten-1">423424已经学习</span>
+                                        <br/>
+                                        <v-btn block small color="info" class="rounded-pill">开始学习</v-btn>
+                                    </div>
+                                </v-list-action>
+                            </v-list-item>
                         </v-card-text>
                     </v-card>
                 </v-card>
@@ -671,3 +718,13 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+    .line__3 {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+</style>
