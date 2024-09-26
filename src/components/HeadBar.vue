@@ -23,12 +23,19 @@
         >
           登陆
         </v-btn>
+        <!-- 登陆对话框 -->
+        <login-register-dialog></login-register-dialog>
     </v-container>
 </template>
 
 <script>
+import LoginRegisterDialog from './LoginRegisterDialog.vue';
+
 export default {
     name: 'HeadBar',
+    components: {
+      LoginRegisterDialog
+    },
     data: () => ({
         tabMenus: [], //应用栏菜单
     }),
