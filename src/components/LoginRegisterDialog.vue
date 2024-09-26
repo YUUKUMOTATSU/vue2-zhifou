@@ -15,6 +15,16 @@
                 height="573"
                 class="dialog_back pa-16 d-flex flex-column"
             >
+                <v-btn
+                    absolute
+                    fab
+                    small
+                    light
+                    style="top: 10px;right: -20px;"
+                    @click="dialogIsShow()"
+                >
+                    <v-icon color="grey" size="30">mdi-close-circle-outline</v-icon>
+                </v-btn>
                 <!-- 网站标题 -->
                 <v-container class="mb-auto">
                     <h1>ZHIFOU</h1>
@@ -124,6 +134,10 @@ export default {
                 '私人微信：kuangshenya 备注来意<br>' +
                 '公众号：狂神说' // 个性签名
             }
+        },
+        // 打开关闭对话框
+        dialogIsShow() {
+            this.show = !this.show
         }
     }
 }

@@ -20,11 +20,12 @@
           top
           text
           class="mr-16"
+          @click="showLoginRegisterDialog()"
         >
           登陆
         </v-btn>
         <!-- 登陆对话框 -->
-        <login-register-dialog></login-register-dialog>
+        <login-register-dialog ref="LoginRegisterDialog"></login-register-dialog>
     </v-container>
 </template>
 
@@ -54,7 +55,11 @@ export default {
             { id: 4, name: "影音", href: "/film"},
             { id: 5, name: "考证", href: "/exam"},
         ]
-        },
+      },
+      // 打开，关闭登陆对话框
+      showLoginRegisterDialog() {
+        this.$refs.LoginRegisterDialog.dialogIsShow()
+      }
     },
 }
 </script>
