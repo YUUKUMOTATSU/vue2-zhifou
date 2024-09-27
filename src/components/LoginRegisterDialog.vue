@@ -65,8 +65,42 @@
                         tile
                         width="500"
                         height="573"
+                        class="pa-16 d-flex flex-column"
                     >
-                        登陆
+                        <!--  标题 -->
+                        <v-container class="d-flex align-center">
+                            <h2>登陆</h2>
+                            <span class="text-caption ml-auto">
+                                没有账号？
+                                <a href="">点击注册</a>
+                            </span>
+                        </v-container>
+                        <!-- 登陆区域 -->
+                        <v-container>
+                            <!-- 账号文本框 -->
+                            <v-text-field
+                                outlined
+                                dense
+                                v-model="login.account"
+                                label="账号 / 邮箱 / 手机号"
+                                placeholder="账号 / 邮箱 / 手机号"
+                            >
+                            </v-text-field>
+                            <!-- 密码输入框 -->
+                            <v-text-field
+                                outlined
+                                dense
+                                v-model="login.password.value"
+                                label="密码"
+                                placeholder="请输入账号密码"
+                                :type="login.password.showPW ? 'text' : 'password'"
+                                :append-icon="login.password.showPW ? 'mdi-eye-off' : 'mdi-eye'"
+                                @click:append="login.password.showPW = !login.password.showPW"
+                            >
+                            </v-text-field>
+                        </v-container>
+                        <!-- 其他登陆方式 -->
+                        <v-container class="mt-auto">3</v-container>
                     </v-card>
                 </v-window-item>
                 <v-window-item :value="2">
@@ -98,7 +132,14 @@ export default {
         show: true, // 显示隐藏对话框
         step: 1,
         recAutoor: {}, // 推荐博主
-        footerLinks: [] // 脚部链接
+        footerLinks: [], // 脚部链接
+        login: {
+            account: '',
+            password: {
+                value: '',
+                showPW: false
+            }
+        }
     }),
     created() {
         this.getFooterLinks()
@@ -113,6 +154,12 @@ export default {
         }
     },
     methods: {
+        // 展示密码
+        showPW() {
+            if (this.login.password.type == 'password') {
+                this.login.password.type == 'text'
+            }
+        },
         // 获取脚步链接
         getFooterLinks() {
             // 请求服务器 -- 获取脚部的链接
