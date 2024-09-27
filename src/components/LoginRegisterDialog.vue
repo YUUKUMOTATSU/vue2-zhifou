@@ -220,8 +220,10 @@
                                         <v-btn
                                             block
                                             color="info"
+                                            :disabled="register.btnCountDown.disabled"
+                                            @click="buttonCountDown"
                                         >
-                                            获取验证码
+                                            {{ register.btnCountDown.text }}
                                         </v-btn>
                                     </v-col>
                                 </v-row>
@@ -300,6 +302,13 @@ export default {
                     v => !!v || '请认真阅读条款协议'
                 ]
             },
+            // 按钮倒计时
+            btnCountDown: {
+                text: '获取验证码',
+                time: 60,
+                disabled: false,
+                clock: null
+            }
         },
         login: {
             value: false,
@@ -341,6 +350,25 @@ export default {
         }
     },
     methods: {
+        buttonCountDown() {
+            // 每一秒执行对应的代码片段
+            this.register.btnCountDown.clock = window.setInterval( () => {
+                if(this.register.btnCountDown.time - 1 === 0) {
+                    // 清楚Interval
+                    clearInterval(this.register.btnCountDown.clock)
+
+                    // 恢复最初状态
+                    this.register.btnCountDown.text = '获取验证码'
+                    this.register.btnCountDown.disabled = false
+                    this.register.btnCountDown.time = 60
+                } else {
+                    // 接着倒计时
+                    this.register.btnCountDown.disabled = true
+                    this.register.btnCountDown.time--
+                    this.register.btnCountDown.text = this.register.btnCountDown.time + 'S秒重新获取'
+                }
+            }, 1000)
+        },
         // 获取其他的登陆方式
         getOtherLoginMethods() {
             // 请求服务器 -- 获取其他的登陆方式
