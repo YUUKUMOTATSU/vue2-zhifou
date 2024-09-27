@@ -60,6 +60,7 @@
             </v-card>
             <!-- 窗口（登陆 注册 注册成功） -->
             <v-window v-model="step">
+                <!-- 登陆窗口 -->
                 <v-window-item :value="1">
                     <v-card
                         tile
@@ -166,13 +167,95 @@
                         </v-container>
                     </v-card>
                 </v-window-item>
+                <!-- 注册窗口 -->
                 <v-window-item :value="2">
                     <v-card
                         tile    
                         width="500"
                         height="573"
+                        class="pa-16 d-flex flex-column"
                     >
-                        注册
+                        <!--  标题 -->
+                        <v-container class="d-flex align-center">
+                            <h2>注册</h2>
+                            <span class="text-caption ml-auto">
+                                已有账号？
+                                <a class="text-decoration-none" @click="step = 1">点击登陆</a>
+                            </span>
+                        </v-container>
+                        <!-- 注册区域 -->
+                        <v-container>
+                            <!-- 注册表单 -->
+                            <v-form
+                                lazy-validation
+                                v-model="register.value"
+                                ref="register_form"
+                            >
+                                <!-- 注册文本框 -->
+                                <v-text-field
+                                    outlined
+                                    dense
+                                    :rules="register.email.rule"
+                                    v-model="register.email.value"
+                                    label="邮箱地址"
+                                    placeholder="请输入邮箱地址"
+                                >
+                                </v-text-field>
+                                <!-- 验证码文本框 -->
+                                <v-row>
+                                    <v-col>
+                                        <!-- 验证码 -->
+                                        <v-text-field
+                                            outlined
+                                            dense
+                                            :rules="register.evc.rule"
+                                            v-model="register.evc.value"
+                                            label="验证码"
+                                            placeholder="输入验证码"
+                                        >
+                                        </v-text-field>
+                                    </v-col>
+                                    <v-col>
+                                        <!-- 验证码按钮 -->
+                                        <v-btn
+                                            block
+                                            color="info"
+                                        >
+                                            获取验证码
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                <!-- 条款和协议 -->
+                                <v-checkbox
+                                    dense
+                                    :rules="register.tarm.rule"
+                                    v-model="register.tarm.value"
+                                    class="mt-0 mb-2"
+                                >
+                                    <!-- 标签插槽 -->
+                                    <template #label>
+                                        同意本公司的
+                                        <a
+                                            target="_blank"
+                                            class="text-decoration-none"
+                                            href="https://www.google.com/"
+                                            @click.stop
+                                        >
+                                            条款与协议
+                                        </a>
+                                    </template>
+                                </v-checkbox>
+                                <!-- 注册按钮 -->
+                                <v-btn
+                                    block
+                                    color="info"
+                                    :disabled="!register.value"
+                                    @click="toRegister"
+                                >
+                                    注册
+                                </v-btn>
+                            </v-form>
+                        </v-container>
                     </v-card>
                 </v-window-item>
                 <v-window-item :value="3">
@@ -193,9 +276,31 @@ export default {
     name: 'LoginRegisterDialog',
     data: () => ({
         show: true, // 显示隐藏对话框
-        step: 1,
+        step: 2,
         recAutoor: {}, // 推荐博主
         footerLinks: [], // 脚部链接
+        register: {
+            value: false,
+            email: {
+                value: '',
+                rule: [
+                    v => !!v || '请填写您的邮箱信息',
+                    v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || '请输入正确的邮箱地址'
+                ]
+            },
+            evc: {
+                value: '', // 验证码
+                rule: [
+                    v => !!v || '请填写验证码',
+                ]
+            },
+            tarm: {
+                value: false,
+                rule: [
+                    v => !!v || '请认真阅读条款协议'
+                ]
+            },
+        },
         login: {
             value: false,
             account: {
@@ -245,15 +350,23 @@ export default {
                 { id: 3, name: '微博', icon: 'mdi-sina-weibo', color: 'error', to: '' }
             ]
         },
+        // 注册
+        toRegister() {
+            // 手动验证表单的状态
+            let isSuccess = this.$refs.register_form.validate()
+            if (isSuccess) {
+                // 请求服务器 -- 登陆
+                alert("验证成功，请求服务器进行注册")
+            }
+        },
         // 登陆
         tologin() {
             // 手动验证表单的状态
             let isSuccess = this.$refs.login_form.validate()
-            if (!isSuccess) {
-                return
-            } else {
+            if (isSuccess) {
                 // 请求服务器 -- 登陆
                 alert("验证成功，请求服务器进行登陆")
+
             }
         },
         // 展示密码
