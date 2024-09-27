@@ -72,7 +72,7 @@
                             <h2>登陆</h2>
                             <span class="text-caption ml-auto">
                                 没有账号？
-                                <a class="text-decoration-none" href="">点击注册</a>
+                                <a class="text-decoration-none" @click="step = 2">点击注册</a>
                             </span>
                         </v-container>
                         <!-- 登陆区域 -->
@@ -110,10 +110,21 @@
                                 <v-checkbox
                                     dense
                                     :rules="login.tarm.rule"
-                                    label="同意本公司的条款和协议"
                                     v-model="login.tarm.value"
                                     class="mt-0 mb-2"
                                 >
+                                    <!-- 标签插槽 -->
+                                    <template #label>
+                                        同意本公司的
+                                        <a
+                                            target="_blank"
+                                            class="text-decoration-none"
+                                            href="https://www.google.com/"
+                                            @click.stop
+                                        >
+                                            条款与协议
+                                        </a>
+                                    </template>
                                 </v-checkbox>
                                 <!-- 登陆按钮 -->
                                 <v-btn
@@ -131,7 +142,28 @@
                             </v-container>
                         </v-container>
                         <!-- 其他登陆方式 -->
-                        <v-container class="mt-auto">3</v-container>
+                        <v-container class="mt-auto">
+                            <!-- 分隔符 -->
+                            <v-container class="d-flex align-center py-0">
+                                <v-divider></v-divider>
+                                <v-subheader class="text-caption">其他登陆方式</v-subheader>
+                                <v-divider></v-divider>
+                            </v-container>
+                            <!-- 图标 -->
+                            <v-container class="d-flex justify-center py-0">
+                                <v-btn
+                                    fab
+                                    small
+                                    :color="i.color"
+                                    v-for="i in otherMethods"
+                                    :key="i.id"
+                                    :to="i.to"
+                                    :class="{'mx-2': (index !== 0)}"
+                                >
+                                    <v-icon>{{ i.icon }}</v-icon>
+                                </v-btn>
+                            </v-container>
+                        </v-container>
                     </v-card>
                 </v-window-item>
                 <v-window-item :value="2">
@@ -184,11 +216,15 @@ export default {
                 rule: [
                     v => !!v || '请认真阅读条款协议'
                 ]
-            }
-        }
+            },
+        },
+        otherMethods: [],
     }),
     created() {
+        // 获取脚部链接
         this.getFooterLinks()
+        // 获取其他登陆方式数据
+        this.getOtherLoginMethods()
     },
     watch: {
         show: {
@@ -200,6 +236,15 @@ export default {
         }
     },
     methods: {
+        // 获取其他的登陆方式
+        getOtherLoginMethods() {
+            // 请求服务器 -- 获取其他的登陆方式
+            this.otherMethods = [
+                { id: 1, name: 'QQ', icon: 'mdi-qqchat', color: 'info', to: '' },
+                { id: 2, name: '微信', icon: 'mdi-wechat', color: 'success', to: '' },
+                { id: 3, name: '微博', icon: 'mdi-sina-weibo', color: 'error', to: '' }
+            ]
+        },
         // 登陆
         tologin() {
             // 手动验证表单的状态
