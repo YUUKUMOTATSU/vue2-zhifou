@@ -72,32 +72,63 @@
                             <h2>登陆</h2>
                             <span class="text-caption ml-auto">
                                 没有账号？
-                                <a href="">点击注册</a>
+                                <a class="text-decoration-none" href="">点击注册</a>
                             </span>
                         </v-container>
                         <!-- 登陆区域 -->
                         <v-container>
-                            <!-- 账号文本框 -->
-                            <v-text-field
-                                outlined
-                                dense
-                                v-model="login.account"
-                                label="账号 / 邮箱 / 手机号"
-                                placeholder="账号 / 邮箱 / 手机号"
+                            <!-- 登陆表单 -->
+                            <v-form
+                                lazy-validation
+                                v-model="login.value"
+                                ref="login_form"
                             >
-                            </v-text-field>
-                            <!-- 密码输入框 -->
-                            <v-text-field
-                                outlined
-                                dense
-                                v-model="login.password.value"
-                                label="密码"
-                                placeholder="请输入账号密码"
-                                :type="login.password.showPW ? 'text' : 'password'"
-                                :append-icon="login.password.showPW ? 'mdi-eye-off' : 'mdi-eye'"
-                                @click:append="login.password.showPW = !login.password.showPW"
-                            >
-                            </v-text-field>
+                                <!-- 账号文本框 -->
+                                <v-text-field
+                                    outlined
+                                    dense
+                                    :rules="login.account.rule"
+                                    v-model="login.account.value"
+                                    label="账号 / 邮箱 / 手机号"
+                                    placeholder="账号 / 邮箱 / 手机号"
+                                >
+                                </v-text-field>
+                                <!-- 密码输入框 -->
+                                <v-text-field
+                                    outlined
+                                    dense
+                                    :rules="login.password.rule"
+                                    v-model="login.password.value"
+                                    label="密码"
+                                    placeholder="请输入账号密码"
+                                    :type="login.password.showPW ? 'text' : 'password'"
+                                    :append-icon="login.password.showPW ? 'mdi-eye-off' : 'mdi-eye'"
+                                    @click:append="login.password.showPW = !login.password.showPW"
+                                >
+                                </v-text-field>
+                                <!-- 条款和协议 -->
+                                <v-checkbox
+                                    dense
+                                    :rules="login.tarm.rule"
+                                    label="同意本公司的条款和协议"
+                                    v-model="login.tarm.value"
+                                    class="mt-0 mb-2"
+                                >
+                                </v-checkbox>
+                                <!-- 登陆按钮 -->
+                                <v-btn
+                                    block
+                                    color="success"
+                                    :disabled="!login.value"
+                                    @click="tologin"
+                                >
+                                    登陆
+                                </v-btn>
+                            </v-form>
+                            <!-- 忘记密码 -->
+                            <v-container class="text-center">
+                                <a class="text-caption grey--text text-decoration-none" href="">忘记密码</a>
+                            </v-container>
                         </v-container>
                         <!-- 其他登陆方式 -->
                         <v-container class="mt-auto">3</v-container>
@@ -134,10 +165,25 @@ export default {
         recAutoor: {}, // 推荐博主
         footerLinks: [], // 脚部链接
         login: {
-            account: '',
+            value: false,
+            account: {
+                value: '',
+                rule: [
+                    v => !!v || '请填写您的账号信息'
+                ]
+            },
             password: {
                 value: '',
-                showPW: false
+                showPW: false,
+                rule: [
+                    v => !!v || '请填写您的密码'
+                ]
+            },
+            tarm: {
+                value: false,
+                rule: [
+                    v => !!v || '请认真阅读条款协议'
+                ]
             }
         }
     }),
@@ -154,6 +200,17 @@ export default {
         }
     },
     methods: {
+        // 登陆
+        tologin() {
+            // 手动验证表单的状态
+            let isSuccess = this.$refs.login_form.validate()
+            if (!isSuccess) {
+                return
+            } else {
+                // 请求服务器 -- 登陆
+                alert("验证成功，请求服务器进行登陆")
+            }
+        },
         // 展示密码
         showPW() {
             if (this.login.password.type == 'password') {
