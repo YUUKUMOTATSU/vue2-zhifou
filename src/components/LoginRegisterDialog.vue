@@ -265,8 +265,26 @@
                         tile
                         width="500"
                         height="573"
+                        class="d-flex align-center"
                     >
-                        注册成功
+                        <v-container class="text-center">
+                            <v-icon
+                                size="150"
+                                color="success"
+                            >
+                                mdi-check-circle
+                            </v-icon>
+                            <h3>欢迎加入知否大家庭</h3>
+                            <p class="text-caption grey--text">
+                                请前往注册的邮箱，查看账户信息
+                                <a
+                                    class="text-decoration-none"
+                                    @click="step = 1"
+                                >
+                                    可点击此处前往登陆
+                                </a>
+                            </p>
+                        </v-container>
                     </v-card>
                 </v-window-item>
             </v-window>
@@ -277,8 +295,8 @@
 export default {
     name: 'LoginRegisterDialog',
     data: () => ({
-        show: true, // 显示隐藏对话框
-        step: 2,
+        show: false, // 显示隐藏对话框
+        step: 1,
         recAutoor: {}, // 推荐博主
         footerLinks: [], // 脚部链接
         register: {
@@ -347,20 +365,35 @@ export default {
                 // 获取推荐的博主
                 this.getRecommendAuthor()
             }
+        },
+        step(newData, oldData) {
+            if (oldData === 1) {
+                this.$refs.login_form.reset()
+            } else if (oldData === 2) {
+                this.$refs.register_form.reset()
+                // 重制倒计时
+                this.resetBtnCountDownStatus()
+            }
         }
     },
     methods: {
+        // 重制倒计时
+        resetBtnCountDownStatus() {
+            // 清除Interval
+            clearInterval(this.register.btnCountDown.clock)
+
+            // 恢复最初状态
+            this.register.btnCountDown.text = '获取验证码'
+            this.register.btnCountDown.disabled = false
+            this.register.btnCountDown.time = 60
+        },
+        // 按钮倒计时
         buttonCountDown() {
             // 每一秒执行对应的代码片段
             this.register.btnCountDown.clock = window.setInterval( () => {
                 if(this.register.btnCountDown.time - 1 === 0) {
-                    // 清楚Interval
-                    clearInterval(this.register.btnCountDown.clock)
-
-                    // 恢复最初状态
-                    this.register.btnCountDown.text = '获取验证码'
-                    this.register.btnCountDown.disabled = false
-                    this.register.btnCountDown.time = 60
+                    // 重制倒计时
+                    this.resetBtnCountDownStatus()                    
                 } else {
                     // 接着倒计时
                     this.register.btnCountDown.disabled = true
