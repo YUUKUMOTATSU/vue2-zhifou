@@ -324,8 +324,7 @@ export default {
             btnCountDown: {
                 text: '获取验证码',
                 time: 60,
-                disabled: false,
-                clock: null
+                disabled: false
             }
         },
         login: {
@@ -377,30 +376,43 @@ export default {
         }
     },
     methods: {
-        // 重制倒计时
-        resetBtnCountDownStatus() {
-            // 清除Interval
-            clearInterval(this.register.btnCountDown.clock)
+        // 按钮倒计时逻辑封装
+        startCountdown(duration) {
+            return new Promise((resolve) => {
+                let timeLeft = duration;
+                this.register.btnCountDown.disabled = true;
+                this.register.btnCountDown.text = `${timeLeft}S秒重新获取`;
 
-            // 恢复最初状态
-            this.register.btnCountDown.text = '获取验证码'
-            this.register.btnCountDown.disabled = false
-            this.register.btnCountDown.time = 60
+                const interval = setInterval(() => {
+                    timeLeft -= 1;
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        this.register.btnCountDown.disabled = false;
+                        this.register.btnCountDown.text = '获取验证码';
+                        resolve(); // 倒计时结束
+                    } else {
+                        this.register.btnCountDown.text = `${timeLeft}S秒重新获取`;
+                    }
+                }, 1000);
+            });
         },
-        // 按钮倒计时
-        buttonCountDown() {
-            // 每一秒执行对应的代码片段
-            this.register.btnCountDown.clock = window.setInterval( () => {
-                if(this.register.btnCountDown.time - 1 === 0) {
-                    // 重制倒计时
-                    this.resetBtnCountDownStatus()                    
-                } else {
-                    // 接着倒计时
-                    this.register.btnCountDown.disabled = true
-                    this.register.btnCountDown.time--
-                    this.register.btnCountDown.text = this.register.btnCountDown.time + 'S秒重新获取'
-                }
-            }, 1000)
+        // 验证码按钮点击事件
+        async buttonCountDown() {
+            // 模拟发送验证码请求
+            const success = await this.sendVerificationCode();
+            if (success) {
+                // 开始倒计时
+                await this.startCountdown(60);
+            }
+        },
+        // 模拟发送验证码请求
+        sendVerificationCode() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    alert('验证码已发送，请查收！');
+                    resolve(true); // 模拟请求成功
+                }, 1000);
+            });
         },
         // 获取其他的登陆方式
         getOtherLoginMethods() {
